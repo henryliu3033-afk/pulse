@@ -1,0 +1,220 @@
+@import "tailwindcss";
+
+/* ─── PULSE Design Tokens ─────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg:        #030712;
+  --bg-2:      #0C1120;
+  --bg-3:      #111827;
+  --bg-4:      #1F2937;
+
+  /* Borders */
+  --bd:        rgba(255,255,255,0.07);
+  --bd-2:      rgba(255,255,255,0.12);
+
+  /* Text */
+  --tx:        #F9FAFB;
+  --tx-2:      #9CA3AF;
+  --tx-3:      #6B7280;
+
+  /* Accent — Emerald */
+  --em:        #10B981;
+  --em-dk:     #059669;
+  --em-lt:     rgba(16,185,129,0.12);
+  --em-glow:   rgba(16,185,129,0.25);
+
+  /* Accent — Lavender */
+  --lv:        #8B5CF6;
+  --lv-dk:     #7C3AED;
+  --lv-lt:     rgba(139,92,246,0.12);
+  --lv-glow:   rgba(139,92,246,0.25);
+
+  --mono: 'Space Mono', 'Noto Sans TC', monospace;
+  --sans: 'Space Grotesk', 'Noto Sans TC', system-ui, sans-serif;
+
+  --r:    6px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+}
+
+/* ─── Base ─────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--tx);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--em-lt); color: var(--em); }
+
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--em); }
+
+/* ─── Container ─────────────────────────────────────────── */
+.wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+@media(min-width:640px)  { .wrap { padding-left: 2rem;    padding-right: 2rem;    } }
+@media(min-width:1024px) { .wrap { padding-left: 3rem;    padding-right: 3rem;    } }
+@media(min-width:1280px) { .wrap { padding-left: 4rem;    padding-right: 4rem;    } }
+
+/* ─── Page transition ─────────────────────────────────── */
+.page-enter { animation: pgIn .25s ease both; }
+@keyframes pgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ─── Tag pill ─────────────────────────────────────────── */
+.tag-em {
+  display: inline-flex; align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--mono);
+  background: var(--em-lt);
+  color: var(--em);
+  border: 1px solid rgba(16,185,129,0.2);
+  transition: all .15s;
+}
+.tag-em:hover { background: var(--em); color: var(--bg); }
+
+.tag-lv {
+  display: inline-flex; align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--mono);
+  background: var(--lv-lt);
+  color: var(--lv);
+  border: 1px solid rgba(139,92,246,0.2);
+  transition: all .15s;
+}
+.tag-lv:hover { background: var(--lv); color: white; }
+
+.tag-ghost {
+  display: inline-flex; align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-family: var(--mono);
+  background: var(--bg-3);
+  color: var(--tx-2);
+  border: 1px solid var(--bd);
+  transition: all .15s;
+}
+.tag-ghost:hover { color: var(--tx); border-color: var(--bd-2); }
+
+/* ─── Card ──────────────────────────────────────────────── */
+.card {
+  background: var(--bg-2);
+  border: 1px solid var(--bd);
+  border-radius: var(--r-lg);
+  transition: border-color .2s, box-shadow .2s;
+}
+.card:hover {
+  border-color: var(--bd-2);
+  box-shadow: 0 0 0 1px rgba(16,185,129,0.08), 0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* ─── Reading progress bar ───────────────────────────────── */
+#read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--em), var(--lv));
+  z-index: 999;
+  transition: width .1s linear;
+}
+
+/* ─── Code block ─────────────────────────────────────────── */
+.prose pre {
+  background: var(--bg-3) !important;
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.875em;
+  background: var(--bg-3);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--em);
+}
+.prose a { color: var(--em); text-decoration: underline; text-underline-offset: 3px; }
+.prose h1,.prose h2,.prose h3 { color: var(--tx); font-weight: 600; }
+.prose h2 { font-size: 1.4rem; margin-top: 2rem; margin-bottom: 0.75rem; }
+.prose h3 { font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.prose p  { color: var(--tx-2); margin-bottom: 1rem; }
+.prose ul,.prose ol { color: var(--tx-2); padding-left: 1.5rem; margin-bottom: 1rem; }
+.prose li { margin-bottom: .25rem; }
+.prose blockquote {
+  border-left: 3px solid var(--em);
+  padding-left: 1rem;
+  color: var(--tx-3);
+  font-style: italic;
+  margin: 1.5rem 0;
+}
+.prose img { border-radius: var(--r-lg); width: 100%; margin: 1.5rem 0; }
+
+/* ─── Skeleton loader ────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-3) 25%, var(--bg-4) 50%, var(--bg-3) 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.6s infinite;
+  border-radius: var(--r);
+}
+
+/* ─── Dark mode search input ─────────────────────────────── */
+.search-input {
+  background: var(--bg-2);
+  border: 1px solid var(--bd);
+  color: var(--tx);
+  outline: none;
+  font-family: var(--sans);
+  border-radius: var(--r-lg);
+  transition: border-color .15s, box-shadow .15s;
+}
+.search-input:focus {
+  border-color: var(--em);
+  box-shadow: 0 0 0 3px var(--em-glow);
+}
+.search-input::placeholder { color: var(--tx-3); }
+
+/* ─── Terminal cursor blink ──────────────────────────────── */
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.cursor-blink { animation: blink 1s step-end infinite; }
+
+/* ─── Gradient text ──────────────────────────────────────── */
+.grad-text {
+  background: linear-gradient(135deg, var(--em) 0%, var(--lv) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Glow divider ───────────────────────────────────────── */
+.glow-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--em), var(--lv), transparent);
+  opacity: 0.3;
+}
