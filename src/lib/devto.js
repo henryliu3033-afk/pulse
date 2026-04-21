@@ -11,7 +11,7 @@ function normalise(raw) {
     description:  raw.description || '',
     body_html:    raw.body_html || '',
     cover:        raw.cover_image || raw.social_image || `https://picsum.photos/seed/${raw.id}/800/420`,
-    tags:         raw.tag_list || [],
+    tags:         Array.isArray(raw.tag_list) ? raw.tag_list : (typeof raw.tag_list === 'string' ? raw.tag_list.split(',').map(t => t.trim()).filter(Boolean) : []),
     readingTime:  raw.reading_time_minutes || 3,
     reactions:    raw.public_reactions_count || 0,
     comments:     raw.comments_count || 0,

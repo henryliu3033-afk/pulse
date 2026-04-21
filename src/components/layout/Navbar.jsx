@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router'
 import { AnimatePresence, motion } from 'motion/react'
 import { useReaderStore } from '../../store/reader.store'
+import { useAuthStore } from '../../store/auth.store'
 import { TOPICS } from '../../constants/topics'
 
 export default function Navbar() {
@@ -12,6 +13,8 @@ export default function Navbar() {
   const location = useLocation()
   const navigate = useNavigate()
   const bmCount  = useReaderStore(s => s.bookmarks.length)
+  const user     = useAuthStore(s => s.user)
+  const logout   = useAuthStore(s => s.logout)
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 10)
@@ -34,12 +37,12 @@ export default function Navbar() {
           borderBottom:  scrolled ? '1px solid var(--bd)' : '1px solid transparent',
           backdropFilter: scrolled ? 'blur(16px)' : 'none',
         }}>
-        <div className="wrap flex items-center justify-between" style={{ height:'60px' }}>
+        <div className="wrap flex items-center justify-between" style={{ height:'80px' }}>
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-            <span className="font-mono font-bold text-xl tracking-tight grad-text">PULSE</span>
-            <span className="font-mono text-[10px] tracking-[0.15em] hidden sm:block cursor-blink"
+            <span className="font-mono font-bold text-3xl tracking-tight grad-text">PULSE</span>
+            <span className="font-mono text-xl tracking-[0.15em] hidden sm:block cursor-blink"
               style={{ color:'var(--em)' }}>_</span>
           </Link>
 
@@ -47,7 +50,7 @@ export default function Navbar() {
           <nav className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
             {TOPICS.slice(0,6).map(({ slug, label }) => (
               <Link key={slug} to={slug ? `/topic/${slug}` : '/'}
-                className="font-mono text-xs px-3 py-1.5 rounded-[var(--r)] transition-all cursor-pointer"
+                className="font-mono text-base px-4 py-2 rounded-[var(--r)] transition-all cursor-pointer"
                 style={{
                   color: location.pathname === (slug ? `/topic/${slug}` : '/') ? 'var(--em)' : 'var(--tx-2)',
                   background: location.pathname === (slug ? `/topic/${slug}` : '/') ? 'var(--em-lt)' : 'transparent',
@@ -66,7 +69,7 @@ export default function Navbar() {
               <form onSubmit={handleSearch} className="hidden md:flex">
                 <input autoFocus value={search} onChange={e => setSearch(e.target.value)}
                   placeholder="搜尋文章…"
-                  className="search-input text-sm px-4 py-2"
+                  className="search-input text-lg px-4 py-2"
                   style={{ width:'220px' }}
                   onBlur={() => { if (!search) setSearching(false) }} />
               </form>
@@ -82,16 +85,47 @@ export default function Navbar() {
               </button>
             )}
 
+            {/* Auth */}
+            {user ? (
+              <div className="hidden md:flex items-center gap-2">
+                <span className="font-mono text-base" style={{ color: 'var(--tx-2)' }}>
+                  Hi, {user.name}
+                </span>
+                <button onClick={() => { logout(); navigate('/') }}
+                  className="px-4 py-2 rounded-[var(--r)] font-mono text-base transition-all cursor-pointer"
+                  style={{ color: 'var(--tx-2)', border: '1px solid var(--bd)' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor='var(--em)'; e.currentTarget.style.color='var(--em)' }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor='var(--bd)'; e.currentTarget.style.color='var(--tx-2)' }}>
+                  登出
+                </button>
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center gap-2">
+                <Link to="/login"
+                  className="px-4 py-2 rounded-[var(--r)] font-mono text-base transition-all cursor-pointer"
+                  style={{ color: 'var(--tx-2)' }}
+                  onMouseEnter={e => e.currentTarget.style.color='var(--tx)'}
+                  onMouseLeave={e => e.currentTarget.style.color='var(--tx-2)'}>
+                  登入
+                </Link>
+                <Link to="/register"
+                  className="px-4 py-2 rounded-[var(--r)] font-mono text-base transition-all cursor-pointer"
+                  style={{ background: 'var(--em)', color: 'var(--bg)' }}>
+                  註冊
+                </Link>
+              </div>
+            )}
+
             {/* Bookmarks */}
             <Link to="/bookmarks"
-              className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-[var(--r)] text-xs font-mono transition-all cursor-pointer"
+              className="relative flex items-center gap-1.5 px-4 py-2 rounded-[var(--r)] text-base font-mono transition-all cursor-pointer"
               style={{ color:'var(--tx-2)', border:'1px solid var(--bd)' }}
               onMouseEnter={e => { e.currentTarget.style.borderColor='var(--em)'; e.currentTarget.style.color='var(--em)' }}
               onMouseLeave={e => { e.currentTarget.style.borderColor='var(--bd)'; e.currentTarget.style.color='var(--tx-2)' }}>
               <span>☆</span>
               <span className="hidden sm:inline">書籤</span>
               {bmCount > 0 && (
-                <span className="w-4 h-4 rounded-full text-[9px] flex items-center justify-center font-bold"
+                <span className="w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold"
                   style={{ background:'var(--em)', color:'var(--bg)' }}>
                   {bmCount}
                 </span>
@@ -119,14 +153,14 @@ export default function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div initial={{ opacity:0, height:0 }} animate={{ opacity:1, height:'auto' }} exit={{ opacity:0, height:0 }}
-            className="fixed top-[60px] left-0 right-0 z-40 lg:hidden overflow-hidden border-b"
+            className="fixed top-[80px] left-0 right-0 z-40 lg:hidden overflow-hidden border-b"
             style={{ background:'rgba(3,7,18,.97)', borderColor:'var(--bd)', backdropFilter:'blur(16px)' }}>
             <div className="wrap py-5 flex flex-col gap-1">
               {/* Search */}
               <form onSubmit={handleSearch} className="flex gap-2 mb-4">
                 <input value={search} onChange={e => setSearch(e.target.value)}
                   placeholder="搜尋文章…"
-                  className="search-input flex-1 text-sm px-4 py-2.5" />
+                  className="search-input flex-1 text-lg px-4 py-2.5" />
                 <button type="submit" className="px-4 py-2.5 text-sm font-mono font-medium rounded-[var(--r)] cursor-pointer transition-colors"
                   style={{ background:'var(--em)', color:'var(--bg)' }}>
                   搜尋
@@ -134,7 +168,7 @@ export default function Navbar() {
               </form>
               {TOPICS.map(({ slug, label, icon }) => (
                 <Link key={slug} to={slug ? `/topic/${slug}` : '/'}
-                  className="flex items-center gap-3 px-3 py-3 rounded-[var(--r)] font-mono text-sm transition-colors cursor-pointer"
+                  className="flex items-center gap-3 px-3 py-3 rounded-[var(--r)] font-mono text-lg transition-colors cursor-pointer"
                   style={{ color:'var(--tx-2)', borderBottom:'1px solid var(--bd)' }}
                   onMouseEnter={e => e.currentTarget.style.color='var(--em)'}
                   onMouseLeave={e => e.currentTarget.style.color='var(--tx-2)'}>

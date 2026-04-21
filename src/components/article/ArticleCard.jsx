@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { motion } from 'motion/react'
 import { fDate } from '../../lib/devto'
 import { useReaderStore } from '../../store/reader.store'
+import { useAuthStore } from '../../store/auth.store'
 
 function Tag({ tag }) {
   const colors = {
@@ -22,6 +23,7 @@ function Tag({ tag }) {
 export function HeroCard({ article, index = 0 }) {
   const isBookmarked = useReaderStore(s => s.isBookmarked(article.id))
   const toggle = useReaderStore(s => s.toggleBookmark)
+  const token  = useAuthStore(s => s.token)
 
   return (
     <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
@@ -38,7 +40,7 @@ export function HeroCard({ article, index = 0 }) {
           </div>
           {/* Bookmark */}
           <button
-            onClick={e => { e.preventDefault(); toggle(article) }}
+            onClick={e => { e.preventDefault(); toggle(article, token) }}
             className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full cursor-pointer transition-all"
             style={{ background: isBookmarked ? 'var(--em)' : 'rgba(3,7,18,.6)', color: isBookmarked ? 'var(--bg)' : 'var(--tx-2)' }}>
             {isBookmarked ? '★' : '☆'}
@@ -74,6 +76,7 @@ export function HeroCard({ article, index = 0 }) {
 export function ArticleCard({ article, index = 0 }) {
   const isBookmarked = useReaderStore(s => s.isBookmarked(article.id))
   const toggle = useReaderStore(s => s.toggleBookmark)
+  const token  = useAuthStore(s => s.token)
 
   return (
     <motion.div initial={{ opacity:0, y:16 }} whileInView={{ opacity:1, y:0 }}
@@ -84,7 +87,7 @@ export function ArticleCard({ article, index = 0 }) {
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy" />
           <button
-            onClick={e => { e.preventDefault(); toggle(article) }}
+            onClick={e => { e.preventDefault(); toggle(article, token) }}
             className="absolute top-2 right-2 w-7 h-7 flex items-center justify-center rounded-full text-sm cursor-pointer transition-all"
             style={{ background: isBookmarked ? 'var(--em)' : 'rgba(3,7,18,.7)', color: isBookmarked ? 'var(--bg)' : 'var(--tx-2)' }}>
             {isBookmarked ? '★' : '☆'}

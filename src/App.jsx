@@ -7,6 +7,8 @@ import ArticlePage   from './pages/ArticlePage'
 import TopicPage     from './pages/TopicPage'
 import SearchPage    from './pages/SearchPage'
 import BookmarksPage from './pages/BookmarksPage'
+import LoginPage     from './pages/LoginPage'
+import RegisterPage  from './pages/RegisterPage'
 
 function AppRoutes() {
   const location = useLocation()
@@ -18,6 +20,8 @@ function AppRoutes() {
         <Route path="/topic/:slug"   element={<TopicPage />} />
         <Route path="/search"        element={<SearchPage />} />
         <Route path="/bookmarks"     element={<BookmarksPage />} />
+        <Route path="/login"         element={<LoginPage />} />
+        <Route path="/register"      element={<RegisterPage />} />
         <Route path="*"              element={<Home />} />
       </Routes>
     </AnimatePresence>

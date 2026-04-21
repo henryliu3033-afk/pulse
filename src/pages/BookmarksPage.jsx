@@ -24,13 +24,24 @@ export default function BookmarksPage() {
         {bookmarks.length === 0 ? (
           <div className="text-center py-24">
             <p className="font-mono text-5xl mb-5" style={{ color: 'var(--bg-4)' }}>{'[ ]'}</p>
-            <p className="font-mono text-sm mb-2" style={{ color: 'var(--tx-3)' }}>
+            <p className="font-mono text-xl mb-2" style={{ color: 'var(--tx-3)' }}>
               // 還沒有收藏任何文章
             </p>
-            <p className="font-mono text-xs mb-8" style={{ color: 'var(--tx-3)' }}>
+            <p className="font-mono text-base mb-8" style={{ color: 'var(--tx-3)' }}>
               點擊文章卡片上的 ☆ 即可收藏
             </p>
-            <Link to="/" className="tag-em cursor-pointer" style={{ textDecoration: 'none' }}>
+            <Link to="/" className="cursor-pointer inline-flex items-center"
+              style={{
+                textDecoration: 'none',
+                fontSize: '1.5rem',
+                fontFamily: 'var(--mono)',
+                fontWeight: '600',
+                padding: '0.75rem 2rem',
+                borderRadius: 'var(--r-lg)',
+                background: 'var(--em)',
+                color: 'var(--bg)',
+                boxShadow: '0 0 24px var(--em-glow)',
+              }}>
               去探索文章 →
             </Link>
           </div>

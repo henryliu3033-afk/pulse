@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router'
 import { useArticle, useLatestArticles } from '../hooks/useArticles'
 import { useReaderStore } from '../store/reader.store'
+import { useAuthStore } from '../store/auth.store'
 import { fDate } from '../lib/devto'
 import { ArticleCard } from '../components/article/ArticleCard'
 import { SkeletonCard } from '../components/ui/SkeletonCard'
@@ -28,6 +29,7 @@ export default function ArticlePage() {
   const isBookmarked = useReaderStore(s => s.isBookmarked(Number(id)))
   const toggle       = useReaderStore(s => s.toggleBookmark)
   const addHistory   = useReaderStore(s => s.addHistory)
+  const token        = useAuthStore(s => s.token)
 
   useEffect(() => {
     if (article) { addHistory(article.id); window.scrollTo(0, 0) }
@@ -69,10 +71,10 @@ export default function ArticlePage() {
           <div className="flex items-center gap-2 mb-5 font-mono text-xs" style={{ color:'var(--tx-3)' }}>
             <Link to="/" className="cursor-pointer transition-colors hover:text-[var(--em)]">~/home</Link>
             <span>/</span>
-            {article.tags[0] && (
+            {article.tags?.[0] && (
               <>
-                <Link to={`/topic/${article.tags[0]}`} className="cursor-pointer transition-colors hover:text-[var(--em)]">
-                  {article.tags[0]}
+                <Link to={`/topic/${article.tags?.[0]}`} className="cursor-pointer transition-colors hover:text-[var(--em)]">
+                  {article.tags?.[0]}
                 </Link>
                 <span>/</span>
               </>
@@ -82,7 +84,7 @@ export default function ArticlePage() {
 
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-4">
-            {article.tags.map(t => (
+            {(article.tags || []).map(t => (
               <Link key={t} to={`/topic/${t}`}
                 className="tag-em cursor-pointer" style={{ textDecoration:'none' }}>
                 #{t}
@@ -110,7 +112,7 @@ export default function ArticlePage() {
               <span>♥ {article.reactions}</span>
               <span>💬 {article.comments}</span>
               {/* Bookmark button */}
-              <button onClick={() => toggle(article)}
+              <button onClick={() => toggle(article, token)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-[var(--r)] border transition-all cursor-pointer"
                 style={{
                   background: isBookmarked ? 'var(--em-lt)' : 'transparent',
@@ -186,7 +188,7 @@ export default function ArticlePage() {
         <div className="glow-line mb-8" />
         <h2 className="font-semibold text-base mb-5" style={{ color:'var(--tx)' }}>
           相關文章
-          {article.tags[0] && <span className="tag-em ml-3 text-[10px]">#{article.tags[0]}</span>}
+          {article.tags?.[0] && <span className="tag-em ml-3 text-[10px]">#{article.tags?.[0]}</span>}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {rl
