@@ -47,7 +47,7 @@ export default function Navbar() {
           </Link>
 
           {/* Center topics — desktop */}
-          <nav className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+          <nav className="hidden lg:flex items-center justify-center gap-1 flex-1 min-w-0 mx-4">
             {TOPICS.slice(0,6).map(({ slug, label }) => (
               <Link key={slug} to={slug ? `/topic/${slug}` : '/'}
                 className="font-mono text-base px-4 py-2 rounded-[var(--r)] transition-all cursor-pointer"
